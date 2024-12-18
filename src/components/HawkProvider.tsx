@@ -1,4 +1,4 @@
-'use client'
+/*'use client'
 
 import React, { createContext, useContext, useRef } from 'react';
 import HawkCatcher from '@hawk.so/javascript';
@@ -33,4 +33,4 @@ export const HawkProvider: React.FC<HawkProviderProps> = ({ children }) => {
 
 export const useHawk = () => {
   return useContext(HawkContext);
-};
+};*/

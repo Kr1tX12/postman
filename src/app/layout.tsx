@@ -32,9 +32,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <HawkProvider>
-              {children}
-            </HawkProvider>
+            {children}
         </ThemeProvider>
       </body>
     </html>
