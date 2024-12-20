@@ -8,7 +8,7 @@ import React from 'react'
 import markdownit from 'markdown-it';
 import View from '@/src/components/View';
 import RecommendedStartups from '@/src/components/RecommendedStartups';
-//const md = markdownit();
+const md = markdownit();
 
 export const experimental_ppr = true;
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
@@ -18,7 +18,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
     if (!post) notFound();
 
-    //const parsedContent = md.render(post.pitch || '');
+    const parsedContent = md.render(post.pitch || '');
 
     return (
         <>
@@ -64,14 +64,14 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
                     </div>
                 </div>
                 <h3 className='font-extrabold text-2xl'>Pitch details</h3>
-                {/*parsedContent ? (
+                {parsedContent ? (
                     <article
                         className='prose !text-white'
                         dangerouslySetInnerHTML={{ __html: parsedContent }}
                     ></article>
                 ) : (
                     <p>No details provided</p>
-                )*/}
+                )}
 
                 <hr className='divider'></hr>
 
