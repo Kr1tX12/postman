@@ -8,19 +8,17 @@ import React from 'react'
 import markdownit from 'markdown-it';
 import View from '@/src/components/View';
 import RecommendedStartups from '@/src/components/RecommendedStartups';
-const md = markdownit({
-    
-});
+const md = markdownit();
 
 export const experimental_ppr = true;
-const page = async ({ params }: {params: Promise<{ slug: string} >}) => {
+const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = await params;
 
-    const post = await client.fetch(STARTUP_QUERY_BY_SLUG, {slug});
-    console.log(post);
+    const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
+
     if (!post) notFound();
 
-    const parsedContent = md.render(`${post.pitch}` || '');
+    const parsedContent = md.render(post.pitch || '');
 
     return (
         <>
@@ -31,53 +29,58 @@ const page = async ({ params }: {params: Promise<{ slug: string} >}) => {
             </section>
 
             <section className='section-container flex flex-col gap-4'>
-                <img className='w-full max-h-[400px] object-cover rounded-lg' src={post.image || undefined} alt='Startup Image' />
+                <img
+                    className='w-full max-h-[400px] object-cover rounded-lg'
+                    src={post.image || ''}
+                    alt='Startup Image'
+                />
 
                 <div>
-                    <div className='flex gap-2 items-center'> 
-                        <Link href={`/user/${[post.author?.slug.current]}`}>
+                    <div className='flex gap-2 items-center'>
+                        <Link href={`/user/${post.author?.slug?.current || ''}`}>
                             <div className='flex gap-2 items-center'>
-                                <img src={post.author?.image || undefined} alt='Author Image' className='size-16 rounded-full object-cover' />
+                                <img
+                                    src={post.author?.image || ''}
+                                    alt='Author Image'
+                                    className='size-16 rounded-full object-cover'
+                                />
                                 <div className='flex flex-col'>
                                     <p className='text-xl font-bold'>
-                                        {post.author?.name}
+                                        {post.author?.name || 'Unknown Author'}
                                     </p>
                                     <p className='text-gray-400'>
-                                        @{post.author?.username}
+                                        @{post.author?.username || 'unknown'}
                                     </p>
                                 </div>
                             </div>
                         </Link>
-                        
+
                         <div className='flex-1'></div>
-                        <Link className='' href={`/?query=${post.category}`}>
+                        <Link className='' href={`/?query=${post.category || ''}`}>
                             <span className='bg-zinc-800 px-4 py-2 rounded-full font-bold'>
-                                {post.category}
+                                {post.category || 'Uncategorized'}
                             </span>
                         </Link>
                     </div>
                 </div>
-                <h3 className='font-extrabold text-2xl'>
-                    Pitch details
-                </h3>
-                {parsedContent ? 
+                <h3 className='font-extrabold text-2xl'>Pitch details</h3>
+                {parsedContent ? (
                     <article
                         className='prose !text-white'
-                        dangerouslySetInnerHTML={{__html: parsedContent}}
-                    >
-
-                    </article>
-                : <p>No details provided</p>}
+                        dangerouslySetInnerHTML={{ __html: parsedContent }}
+                    ></article>
+                ) : (
+                    <p>No details provided</p>
+                )}
 
                 <hr className='divider'></hr>
 
                 <View id={post._id} />
 
                 <RecommendedStartups />
-            </section> 
-            
+            </section>
         </>
-    )
-}
+    );
+};
 
 export default page
